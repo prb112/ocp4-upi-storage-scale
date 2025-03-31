@@ -32,6 +32,7 @@ resource "null_resource" "daemon_init" {
     timeout     = var.ssh["connection_timeout"]
   }
 
+  # Configure password-less SSH 
   provisioner "file" {
     content     = sensitive(var.ssh["private_key"])
     destination = ".ssh/id_rsa"
@@ -48,8 +49,8 @@ resource "null_resource" "daemon_init" {
       <<EOF
 sudo chmod 600 .ssh/id_rsa*
 sudo sed -i.bak -e 's/^ - set_hostname/# - set_hostname/' -e 's/^ - update_hostname/# - update_hostname/' /etc/cloud/cloud.cfg
-sudo hostnamectl set-hostname --static 'HOSTNAME=${lower(var.daemon["name_prefix"])}-daemon-${count.index}.${var.daemon["domain_name"]}'
-echo 'HOSTNAME=${lower(var.daemon["name_prefix"])}-daemon-${count.index}.${var.daemon["domain_name"]}' | sudo tee -a /etc/sysconfig/network > /dev/null
+sudo hostnamectl set-hostname --static 'HOSTNAME=${lower(var.daemon["name_prefix"])}-scale-${count.index}.${var.daemon["domain_name"]}'
+echo 'HOSTNAME=${lower(var.daemon["name_prefix"])}-scale-${count.index}.${var.daemon["domain_name"]}' | sudo tee -a /etc/sysconfig/network > /dev/null
 sudo hostname -F /etc/hostname
 echo 'vm.max_map_count = 262144' | sudo tee --append /etc/sysctl.conf > /dev/null
 EOF
@@ -150,4 +151,52 @@ resource "null_resource" "daemon_packages" {
       "sudo systemctl enable NetworkManager"
     ]
   }
+
+  # setup chrony
+  provisioner "remote-exec" {
+    inline = [
+      <<EOF
+yum install -y chrony
+systemctl enable chronyd
+systemctl start chronyd
+hostname --long 
+date
+EOF
+    ]
+  }
+
+  # setup packages
+  provisioner "remote-exec" {
+    inline = [
+      <<EOF
+yum -y install 'kernel-devel-uname-r == $(uname -r)'
+yum -y install cpp gcc gcc-c++ binutils
+yum -y install 'kernel-headers-$(uname -r)' elfutils elfutils-devel make
+done
+yum -y install python3 ksh m4 boost-regex
+yum -y install postgresql-server postgresql-contrib
+yum -y install openssl-devel cyrus-sasl-devel
+yum -y install nftables
+EOF
+    ]
+  }
+
+    # uname
+    provisioner "remote-exec" {
+    inline = [
+      <<EOF
+uname -r
+EOF
+    ]
+  }
 }
+
+
+
+Gap:
+null_provisioner is not updated.
+```
+> null_provisioner
+yum update -y
+systemctl reboot
+```

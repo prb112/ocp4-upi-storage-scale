@@ -18,20 +18,3 @@
 #
 ################################################################
 
-################################################################
-# Configure the IBM Cloud provider
-################################################################
-variable "ibmcloud_api_key" {
-  description = "IBM Cloud API key associated with user's identity"
-  default     = "<key>"
-}
-
-variable "ibmcloud_region" {
-  description = "The IBM Cloud region where you want to create the resources"
-  default     = ""
-}
-
-variable "ibmcloud_zone" {
-  description = "The zone of an IBM Cloud region where you want to create Power System resources"
-  default     = ""
-}
