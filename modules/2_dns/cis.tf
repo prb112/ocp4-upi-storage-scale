@@ -18,27 +18,17 @@
 #
 ################################################################
 
-provider "ibm" {
-  ibmcloud_api_key = var.ibmcloud_api_key
-  region           = var.ibmcloud_region
-  zone             = var.ibmcloud_zone
-}
-
-locals {
-    daemon_count = 2
-}
-
 data "ibm_cis_domain" "domain" {
   cis_id = var.ibm_cloud_cis_crn
-  domain = var.cluster_domain
+  domain = var.daemon["domain_name"]
 }
 
 resource "ibm_cis_dns_record" "daemon_scale" {
-  count     = local.daemon_count
+  count     = var.daemon["count"]
   cis_id    = var.ibm_cloud_cis_crn
   content   = var.daemon_ips[count.index]
   domain_id = data.ibm_cis_domain.domain.id
-  name      = "${var.name_prefix}-scale-${count.index}.${var.cluster_id}.${var.cluster_domain}"
+  name      = "${lower(var.daemon["name_prefix"])}-scale-${count.index}.${var.daemon["domain_name"]}"
   ttl       = 900
   type      = "A"
 }

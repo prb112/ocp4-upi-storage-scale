@@ -18,14 +18,19 @@
 #
 ################################################################
 
-resource "openstack_compute_instance_v2" "daemon" {
-  count     = var.daemon["count"]
-  name      = join("-", var.daemon["name_prefix"], "daemon", "${count.index}")
-  image_id  = var.daemon["image_id"]
-  flavor_id = var.storage["scg_id"] == "" ? data.openstack_compute_flavor_v2.daemon.id : openstack_compute_flavor_v2.daemon_scg[0].id
-  key_pair  = openstack_compute_keypair_v2.key-pair.0.name
-  network {
-    name = data.openstack_networking_network_v2.network.name
-  }
-  availability_zone = lookup(var.daemon, "availability_zone", var.daemon["openstack_availability_zone"])
+provider "ibm" {
+  ibmcloud_api_key = var.ibmcloud["api_key"]
+  region           = var.ibmcloud["region"]
+  zone             = var.ibmcloud["zone"]
+  alias            = "ibm-cloud"
+}
+
+provider "openstack" {
+  user_name   = var.openstack["user_name"]
+  password    = var.openstack["password"]
+  tenant_name = var.openstack["tenant_name"]
+  domain_name = var.openstack["domain_name"]
+  auth_url    = var.openstack["auth_url"]
+  insecure    = var.openstack["insecure"]
+  alias       = "powervc"
 }

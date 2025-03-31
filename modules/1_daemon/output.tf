@@ -18,7 +18,7 @@
 #
 ################################################################
 
-output "bastion_ip" {
+output "daemon_ips" {
   depends_on = [null_resource.bastion_packages, null_resource.setup_nfs_disk]
-  value      = openstack_compute_instance_v2.bastion.*.access_ip_v4
+  value      = openstack_compute_instance_v2.daemon.*.access_ip_v4
 }

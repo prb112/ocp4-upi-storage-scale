@@ -8,7 +8,7 @@
 #
 # Licensed Materials - Property of IBM
 #
-# ©Copyright IBM Corp. 2020
+# ©Copyright IBM Corp. 2025
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,38 +18,20 @@
 #
 ################################################################
 
-variable "cluster_domain" {
-  default = "example.com"
+################################################################
+# Configure the IBM Cloud provider
+################################################################
+variable "ibmcloud_api_key" {
+  description = "IBM Cloud API key associated with user's identity"
+  default     = "<key>"
 }
-variable "cluster_id" {
-  default = "test-ocp"
+
+variable "ibmcloud_region" {
+  description = "The IBM Cloud region where you want to create the resources"
+  default     = ""
 }
-variable "bastion" {}
-variable "bastion_port_ids" {}
 
-variable "scg_id" {}
-variable "scg_flavor_is_public" {}
-variable "openstack_availability_zone" {}
-
-variable "rhel_username" {}
-variable "private_key" {}
-variable "public_key" {}
-variable "create_keypair" {}
-variable "keypair_name" {}
-variable "ssh_agent" {}
-variable "connection_timeout" {}
-variable "jump_host" {}
-
-variable "rhel_subscription_username" {}
-variable "rhel_subscription_password" {}
-variable "rhel_subscription_org" {}
-variable "rhel_subscription_activationkey" {}
-variable "ansible_repo_name" {}
-
-variable "storage_type" {}
-variable "volume_size" {}
-variable "volume_storage_template" {}
-
-variable "setup_squid_proxy" {}
-variable "proxy" {}
-variable "fips_compliant" {}
+variable "ibmcloud_zone" {
+  description = "The zone of an IBM Cloud region where you want to create Power System resources"
+  default     = ""
+}

@@ -18,27 +18,46 @@
 #
 ################################################################
 
-variable "ibmcloud_api_key" {
-  description = "IBM Cloud API key associated with user's identity"
-  default     = "<key>"
+################################################################
+# Configure the IBM Cloud provider
+################################################################
+
+variable "ibmcloud" {
+  description = "IBM Cloud Configuration"
+  default = {
+    # IBM Cloud API key associated with user's identity
+    api_key = ""
+    # The IBM Cloud region where you want to create the resources
+    region = ""
+    # The zone of an IBM Cloud region where you want to create Power System resources
+    zone = ""
+  }
 }
 
-variable "ibmcloud_region" {
-  description = "The IBM Cloud region where you want to create the resources"
-  default     = ""
+################################################################
+# Configure the Instance details
+################################################################
+
+variable "daemon" {
+  description = ""
+  default = {
+    "username"                  = "root"
+    name_prefix                 = ""
+    count                       = 1
+    instance_type               = ""
+    domain_name                 = ""
+    openstack_availability_zone = ""
+    fips_compliant              = ""
+    network_name                = ""
+  }
 }
 
-variable "ibmcloud_zone" {
-  description = "The zone of an IBM Cloud region where you want to create Power System resources"
-  default     = ""
+variable "daemon_ips" {
+  type = list(string)
 }
 
-variable "ibm_cloud_cis_crn" {}
-
-variable "cluster_domain" {
-  default = "example.com"
+variable "ibm_cloud_cis_crn" {
+  description = "The CRN of the CIS instance where the domain's dns is hosted"
+  type        = string
+  default     = "ocp.local"
 }
-
-variable "name_prefix" {}
-
-variable "daemon_ips" {}

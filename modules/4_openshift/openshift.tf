@@ -19,13 +19,13 @@
 ################################################################
 
 locals {
-    daemon_count = 2
+  daemon_count = 2
 }
 
 resource "null_resource" "daemon_register" {
-  count      = (var.rhel_subscription_username == "" || var.rhel_subscription_username == "<subscription-id>") && var.rhel_subscription_org == "" ? 0 : local.daemon_count
+  count = (var.rhel_subscription_username == "" || var.rhel_subscription_username == "<subscription-id>") && var.rhel_subscription_org == "" ? 0 : local.daemon_count
   triggers = {
-    daemon_ip         = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
+    daemon_ip          = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     rhel_username      = var.rhel_username
     private_key        = var.private_key
     ssh_agent          = var.ssh_agent
@@ -34,12 +34,12 @@ resource "null_resource" "daemon_register" {
   }
 
   connection {
-    type         = "ssh"
-    user         = self.triggers.rhel_username
-    host         = self.triggers.daemon_ip
-    private_key  = self.triggers.private_key
-    agent        = self.triggers.ssh_agent
-    timeout      = "${self.triggers.connection_timeout}m"
+    type        = "ssh"
+    user        = self.triggers.rhel_username
+    host        = self.triggers.daemon_ip
+    private_key = self.triggers.private_key
+    agent       = self.triggers.ssh_agent
+    timeout     = "${self.triggers.connection_timeout}m"
   }
 
   provisioner "remote-exec" {
@@ -68,12 +68,12 @@ EOF
 
   provisioner "remote-exec" {
     connection {
-      type         = "ssh"
-      user         = self.triggers.rhel_username
-      host         = self.triggers.daemon_ip
-      private_key  = self.triggers.private_key
-      agent        = self.triggers.ssh_agent
-      timeout      = "${self.triggers.connection_timeout}m"
+      type        = "ssh"
+      user        = self.triggers.rhel_username
+      host        = self.triggers.daemon_ip
+      private_key = self.triggers.private_key
+      agent       = self.triggers.ssh_agent
+      timeout     = "${self.triggers.connection_timeout}m"
     }
 
     when       = destroy
@@ -89,7 +89,7 @@ resource "null_resource" "daemon_register" {
   count      = (var.rhel_subscription_username == "" || var.rhel_subscription_username == "<subscription-id>") && var.rhel_subscription_org == "" ? 0 : local.daemon_count
   depends_on = [null_resource.daemon_init]
   triggers = {
-    daemon_ip         = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
+    daemon_ip          = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     rhel_username      = var.rhel_username
     private_key        = var.private_key
     ssh_agent          = var.ssh_agent
@@ -98,12 +98,12 @@ resource "null_resource" "daemon_register" {
   }
 
   connection {
-    type         = "ssh"
-    user         = self.triggers.rhel_username
-    host         = self.triggers.daemon_ip
-    private_key  = self.triggers.private_key
-    agent        = self.triggers.ssh_agent
-    timeout      = "${self.triggers.connection_timeout}m"
+    type        = "ssh"
+    user        = self.triggers.rhel_username
+    host        = self.triggers.daemon_ip
+    private_key = self.triggers.private_key
+    agent       = self.triggers.ssh_agent
+    timeout     = "${self.triggers.connection_timeout}m"
   }
 
   provisioner "remote-exec" {
@@ -132,12 +132,12 @@ EOF
 
   provisioner "remote-exec" {
     connection {
-      type         = "ssh"
-      user         = self.triggers.rhel_username
-      host         = self.triggers.daemon_ip
-      private_key  = self.triggers.private_key
-      agent        = self.triggers.ssh_agent
-      timeout      = "${self.triggers.connection_timeout}m"
+      type        = "ssh"
+      user        = self.triggers.rhel_username
+      host        = self.triggers.daemon_ip
+      private_key = self.triggers.private_key
+      agent       = self.triggers.ssh_agent
+      timeout     = "${self.triggers.connection_timeout}m"
     }
 
     when       = destroy
