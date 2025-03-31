@@ -29,7 +29,7 @@ locals {
 resource "openstack_blockstorage_volume_v3" "storage_volume" {
   count = var.storage["number_volumes"]
 
-  name        = join(var.daemon["name_prefix"], "storage-vol", "${count.index}")
+  name        = join("-", [var.daemon["name_prefix"], "storage-vol", tostring(count.index)])
   size        = var.storage["number_volumes"]
   volume_type = var.storage["volume_storage_template"]
 

@@ -20,7 +20,7 @@
 
 resource "openstack_compute_instance_v2" "daemon" {
   count     = var.daemon["count"]
-  name      = join("-", var.daemon["name_prefix"], "daemon", "${count.index}")
+  name      = join("-", [var.daemon["name_prefix"], "daemon", "${count.index}"])
   image_id  = var.daemon["image_id"]
   flavor_id = var.storage["scg_id"] == "" ? data.openstack_compute_flavor_v2.daemon.id : openstack_compute_flavor_v2.daemon_scg[0].id
   key_pair  = openstack_compute_keypair_v2.key-pair.0.name

@@ -41,7 +41,7 @@ variable "ibmcloud" {
 variable "daemon" {
   description = ""
   default = {
-    "username"                  = "root"
+    username                    = "root"
     name_prefix                 = ""
     count                       = 1
     instance_type               = ""

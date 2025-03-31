@@ -19,6 +19,6 @@
 ################################################################
 
 output "daemon_ips" {
-  depends_on = [null_resource.bastion_packages, null_resource.setup_nfs_disk]
+  depends_on = [null_resource.await_start_up]
   value      = openstack_compute_instance_v2.daemon.*.access_ip_v4
 }

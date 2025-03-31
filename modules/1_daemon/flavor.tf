@@ -24,7 +24,7 @@ data "openstack_compute_flavor_v2" "daemon" {
 
 resource "openstack_compute_flavor_v2" "daemon_scg" {
   count        = var.storage["scg_id"] == "" ? 0 : 1
-  name         = "${var.daemon["instance_type"]}-${random_id.label[0].hex}-scg"
+  name         = "${var.daemon["instance_type"]}-scg"
   region       = data.openstack_compute_flavor_v2.daemon.region
   ram          = data.openstack_compute_flavor_v2.daemon.ram
   vcpus        = data.openstack_compute_flavor_v2.daemon.vcpus

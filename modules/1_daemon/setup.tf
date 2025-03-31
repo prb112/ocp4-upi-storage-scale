@@ -25,7 +25,7 @@ resource "null_resource" "daemon_init" {
 
   connection {
     type        = "ssh"
-    user        = var.rhel["username"]
+    user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     private_key = sensitive(var.ssh["private_key"])
     agent       = var.ssh["agent"]
@@ -65,7 +65,7 @@ resource "null_resource" "daemon_register" {
 
   triggers = {
     type        = "ssh"
-    user        = var.rhel["username"]
+    user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     private_key = sensitive(var.ssh["private_key"])
     agent       = var.ssh["agent"]
@@ -86,10 +86,10 @@ resource "null_resource" "daemon_register" {
 # Give some more time to subscription-manager
 sudo subscription-manager config --server.server_timeout=600
 sudo subscription-manager clean
-if [[ '${var.rhel["subscription_org"]}' == '' ]]; then
-    sudo subscription-manager register --username='${var.rhel["username"]}' --password='${var.rhel["password"]}' --force
+if [[ '${var.daemon["subscription_org"]}' == '' ]]; then
+    sudo subscription-manager register --username='${var.daemon["username"]}' --password='${var.daemon["password"]}' --force
 else
-    sudo subscription-manager register --org='${var.rhel["subscription_org"]}' --activationkey='${var.rhel["activationkey"]}' --force
+    sudo subscription-manager register --org='${var.daemon["subscription_org"]}' --activationkey='${var.daemon["activationkey"]}' --force
 fi
 sudo subscription-manager refresh
 sudo subscription-manager attach --auto
@@ -129,7 +129,7 @@ resource "null_resource" "daemon_packages" {
 
   connection {
     type        = "ssh"
-    user        = var.rhel["username"]
+    user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     private_key = sensitive(var.ssh["private_key"])
     agent       = var.ssh["agent"]
@@ -205,7 +205,7 @@ resource "null_resource" "await_start_up" {
 
   connection {
     type        = "ssh"
-    user        = var.rhel["username"]
+    user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
     private_key = sensitive(var.ssh["private_key"])
     agent       = var.ssh["agent"]

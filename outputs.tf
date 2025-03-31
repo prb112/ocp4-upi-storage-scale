@@ -18,6 +18,6 @@
 #
 ################################################################
 
-output "bastion_public_ip" {
-  value = module.daemon[*].bastion_public_ip
+output "scale_public_ips" {
+  value = module.daemon.daemon_ips
 }
