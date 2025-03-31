@@ -181,22 +181,42 @@ EOF
     ]
   }
 
-    # uname
-    provisioner "remote-exec" {
+  # Update and Reboot
+  provisioner "remote-exec" {
     inline = [
       <<EOF
-uname -r
+yum update -y
+systemctl reboot
 EOF
     ]
   }
 }
 
+resource "time_sleep" "await_reboot" {
+  depends_on       = [null_resource.daemon_packages]
+  create_duration  = "120s"
+  destroy_duration = "0s"
+}
 
+resource "null_resource" "await_start_up" {
+  depends_on = [time_sleep.await_reboot]
 
-Gap:
-null_provisioner is not updated.
-```
-> null_provisioner
-yum update -y
-systemctl reboot
-```
+  count = var.daemon["count"]
+
+  connection {
+    type        = "ssh"
+    user        = var.rhel["username"]
+    host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
+    private_key = sensitive(var.ssh["private_key"])
+    agent       = var.ssh["agent"]
+    timeout     = var.ssh["connection_timeout"]
+  }
+  provisioner "remote-exec" {
+    inline = [
+      <<EOF
+uname -r
+echo "Updated"
+EOF
+    ]
+  }
+}
