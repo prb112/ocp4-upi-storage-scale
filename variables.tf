@@ -71,6 +71,7 @@ variable "daemon" {
     username                    = "root"
     name_prefix                 = ""
     count                       = 1
+    image_id                    = ""
     instance_type               = ""
     domain_name                 = ""
     openstack_availability_zone = ""
@@ -93,7 +94,6 @@ variable "storage" {
   default = {
     "scg_id"                  = ""
     "scg_flavor_is_public"    = ""
-    "storage_type"            = ""
     "volume_size"             = ""
     "volume_storage_template" = ""
     "number_volumes"          = 2
@@ -120,7 +120,7 @@ variable "ssh" {
     # if empty, will default to ${path.cwd}/data/id_rsa
     private_key_file = "data/id_rsa"
 
-    ssh_agent          = true
+    agent              = true
     connection_timeout = "60m"
   }
 }

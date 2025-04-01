@@ -40,8 +40,27 @@ resource "openstack_blockstorage_volume_v3" "storage_volume" {
 
 resource "openstack_compute_volume_attach_v2" "storage_v_attach" {
   depends_on = [null_resource.daemon_init]
-  count      = var.storage["number_volumes"] * var.daemon["count"]
 
-  volume_id   = openstack_blockstorage_volume_v3.storage_volume[count.index % var.storage["number_volumes"]].id
-  instance_id = openstack_compute_instance_v2.daemon[count.index % var.storage["number_volumes"]].id
+  // Need to generate a matrix
+  for_each = {
+    storage1 = {
+      volume = 0
+      daemon = 0
+    }
+    storage2 = {
+      volume = 0
+      daemon = 1
+    }
+    storage3 = {
+      volume = 1
+      daemon = 0
+    }
+    storage4 = {
+      volume = 1
+      daemon = 1
+    }
+  }
+
+  volume_id   = openstack_blockstorage_volume_v3.storage_volume[each.value.volume].id
+  instance_id = openstack_compute_instance_v2.daemon[each.value.daemon].id
 }

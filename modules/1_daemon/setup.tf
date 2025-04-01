@@ -27,14 +27,14 @@ resource "null_resource" "daemon_init" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }
 
   # Configure password-less SSH 
   provisioner "file" {
-    content     = sensitive(var.ssh["private_key"])
+    content     = sensitive(local.private_key)
     destination = ".ssh/id_rsa"
   }
 
@@ -67,7 +67,7 @@ resource "null_resource" "daemon_register" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }
@@ -131,7 +131,7 @@ resource "null_resource" "daemon_packages" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }
@@ -207,7 +207,7 @@ resource "null_resource" "await_start_up" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = openstack_compute_instance_v2.daemon[count.index].access_ip_v4
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }

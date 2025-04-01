@@ -20,8 +20,8 @@
 
 # Figures out the key files
 locals {
-  private_key_file = var.ssh["private_key_file"] == "" ? "${path.cwd}/data/id_rsa" : join("/", "${path.cwd}", var.ssh["private_key_file"])
-  public_key_file  = var.ssh["public_key_file"] == "" ? "${path.cwd}/data/id_rsa.pub" : join("/", "${path.cwd}", var.ssh["public_key_file"])
+  private_key_file = var.ssh["private_key_file"] == "" ? "${path.cwd}/data/id_rsa" : join("/", ["${path.cwd}", var.ssh["private_key_file"]])
+  public_key_file  = var.ssh["public_key_file"] == "" ? "${path.cwd}/data/id_rsa.pub" : join("/", ["${path.cwd}", var.ssh["public_key_file"]])
   private_key      = file(coalesce(local.private_key_file, "/dev/null"))
   public_key       = file(coalesce(local.public_key_file, "/dev/null"))
 }

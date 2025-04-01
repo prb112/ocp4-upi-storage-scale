@@ -95,7 +95,7 @@ ssh = {
   # if empty, will default to ${path.cwd}/data/id_rsa
   private_key_file = "data/id_rsa"
 
-  ssh_agent          = true
+  agent              = true
   connection_timeout = "60m"
 
 }
