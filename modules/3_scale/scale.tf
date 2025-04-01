@@ -30,6 +30,10 @@ resource "null_resource" "install_scale" {
     timeout     = var.ssh["connection_timeout"]
   }
 
+    #Download Storage Scale 5.2.1.1 installer from IBM Fix Central.
+    #Install the Storage Scale 5.2.1.1 binary files.
+    #Create a two-node Storage Scale cluster on the RHEL 9.4 VMs and the shared disks.
+    #Prepare the Storage Scale 5.2.1.1 cluster for Storage Scale Container Native Storage Access 5.2.1.1.
   provisioner "remote-exec" {
     inline = [
       <<EOF

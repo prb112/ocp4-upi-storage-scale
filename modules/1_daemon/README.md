@@ -1,2 +1,1 @@
-This modules uses an existing private network and assumes each instance is tuned to use the same MTU. The IPs are automatically provisioned for each instance.
-There are two disks provisioned
+This modules uses an existing private network and assumes each instance is tuned to use the same MTU. The IPs are automatically provisioned for each instance. There are two disks provisioned by default.
