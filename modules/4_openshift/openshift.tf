@@ -18,13 +18,12 @@
 #
 ################################################################
 
-resource "null_resource" "install_scale" {
-  count = var.daemon["count"]
+resource "null_resource" "setup_openshift" {
 
   connection {
     type        = "ssh"
     user        = var.daemon["username"]
-    host        = var.daemon_ips[count.index]
+    host        = var.openshift["bastion_ip"]
     private_key = sensitive(var.ssh["private_key"])
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]

@@ -49,6 +49,7 @@ module "scale" {
 
   daemon     = var.daemon
   daemon_ips = module.daemon.daemon_ips
+  scale      = var.scale
   ssh        = var.ssh
 }
 

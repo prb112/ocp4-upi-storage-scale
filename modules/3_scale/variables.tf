@@ -60,3 +60,14 @@ variable "ssh" {
     connection_timeout = "60m"
   }
 }
+
+################################################################
+# Configure the Scale
+################################################################
+
+variable "scale" {
+  description = "The scale install details"
+  default = {
+    install = "data/Storage_Scale_Advanced-5.2.2.1-ppc64LE-Linux-install"
+  }
+}
