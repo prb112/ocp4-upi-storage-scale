@@ -160,10 +160,10 @@ EOF
   }
 
   # Run the following commands to enable quota on the gpfs0 file system, to change SELinux setting and to enable the filesetdf option.
-    # enable quota on filesystem used by csi
-    # enable quota for root user
-    # ensure selinux parameter is set to yes
-    # enable filesetdf
+  # enable quota on filesystem used by csi
+  # enable quota for root user
+  # ensure selinux parameter is set to yes
+  # enable filesetdf
   provisioner "remote-exec" {
     inline = [
       <<EOF
