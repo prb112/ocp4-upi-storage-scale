@@ -24,18 +24,6 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.2"
     }
-    openstack = {
-      source  = "terraform-provider-openstack/openstack"
-      version = "~> 3.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.7"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "~> 0.13.0"
-    }
   }
   required_version = ">= 1.5.0"
 }

@@ -42,3 +42,22 @@ module "dns" {
   daemon            = var.daemon
   daemon_ips        = module.daemon.daemon_ips
 }
+
+module "scale" {
+  depends_on = [module.dns]
+  source     = "./modules/3_scale"
+
+  daemon     = var.daemon
+  daemon_ips = module.daemon.daemon_ips
+  ssh        = var.ssh
+}
+
+module "openshift" {
+  depends_on = [module.scale]
+  source     = "./modules/4_openshift"
+
+  openshift  = var.openshift
+  daemon_ips = module.daemon.daemon_ips
+  ssh        = var.ssh
+  daemon     = var.daemon
+}

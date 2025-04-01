@@ -124,3 +124,17 @@ variable "ssh" {
     connection_timeout = "60m"
   }
 }
+
+################################################################
+# Configure the OpenShift
+################################################################
+
+variable "openshift" {
+  description = "The openshift login"
+  default = {
+    api_url    = "root"
+    user       = ""
+    pass       = 1
+    bastion_ip = ""
+  }
+}

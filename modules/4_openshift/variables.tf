@@ -18,38 +18,59 @@
 #
 ################################################################
 
-variable "cluster_domain" {
-  default = "example.com"
+variable "openshift" {
+  description = "The openshift login"
+  default = {
+    api_url    = "root"
+    user       = ""
+    pass       = 1
+    bastion_ip = ""
+  }
 }
-variable "cluster_id" {
-  default = "test-ocp"
+
+variable "daemon_ips" {
+  type = list(string)
 }
-variable "bastion" {}
-variable "bastion_port_ids" {}
 
-variable "scg_id" {}
-variable "scg_flavor_is_public" {}
-variable "openstack_availability_zone" {}
+################################################################
+# Configure the Instance details
+################################################################
 
-variable "rhel_username" {}
-variable "private_key" {}
-variable "public_key" {}
-variable "create_keypair" {}
-variable "keypair_name" {}
-variable "ssh_agent" {}
-variable "connection_timeout" {}
-variable "jump_host" {}
+variable "daemon" {
+  description = ""
+  default = {
+    username                    = "root"
+    name_prefix                 = ""
+    count                       = 1
+    instance_type               = ""
+    domain_name                 = ""
+    openstack_availability_zone = ""
+    fips_compliant              = ""
+    network_name                = ""
+  }
+}
 
-variable "rhel_subscription_username" {}
-variable "rhel_subscription_password" {}
-variable "rhel_subscription_org" {}
-variable "rhel_subscription_activationkey" {}
-variable "ansible_repo_name" {}
+################################################################
+# Configure the OpenStack SSH Key
+################################################################
 
-variable "storage_type" {}
-variable "volume_size" {}
-variable "volume_storage_template" {}
+variable "ssh" {
+  default = {
+    create_keypair = ""
 
-variable "setup_squid_proxy" {}
-variable "proxy" {}
-variable "fips_compliant" {}
+    # Set this variable to the name of an already generated
+    # keypair to use it instead of creating a new one.
+    keypair_name = ""
+
+    # Path to public key file
+    # if empty, will default to ${path.cwd}/data/id_rsa.pub
+    public_key_file = "data/id_rsa.pub"
+
+    # Path to public key file
+    # if empty, will default to ${path.cwd}/data/id_rsa
+    private_key_file = "data/id_rsa"
+
+    ssh_agent          = true
+    connection_timeout = "60m"
+  }
+}

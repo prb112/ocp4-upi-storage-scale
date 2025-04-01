@@ -18,3 +18,45 @@
 #
 ################################################################
 
+variable "daemon" {
+  description = ""
+  default = {
+    username                    = "root"
+    name_prefix                 = ""
+    count                       = 1
+    instance_type               = ""
+    domain_name                 = ""
+    openstack_availability_zone = ""
+    fips_compliant              = ""
+    network_name                = ""
+  }
+}
+
+variable "daemon_ips" {
+  type = list(string)
+}
+
+################################################################
+# Configure the OpenStack SSH Key
+################################################################
+
+variable "ssh" {
+  default = {
+    create_keypair = ""
+
+    # Set this variable to the name of an already generated
+    # keypair to use it instead of creating a new one.
+    keypair_name = ""
+
+    # Path to public key file
+    # if empty, will default to ${path.cwd}/data/id_rsa.pub
+    public_key_file = "data/id_rsa.pub"
+
+    # Path to public key file
+    # if empty, will default to ${path.cwd}/data/id_rsa
+    private_key_file = "data/id_rsa"
+
+    ssh_agent          = true
+    connection_timeout = "60m"
+  }
+}
