@@ -39,7 +39,7 @@ resource "null_resource" "daemon_init" {
   }
 
   provisioner "file" {
-    content     = sensitive(var.ssh["public_key"])
+    content     = sensitive(local.public_key)
     destination = ".ssh/id_rsa.pub"
   }
 
@@ -86,10 +86,10 @@ resource "null_resource" "daemon_register" {
 # Give some more time to subscription-manager
 sudo subscription-manager config --server.server_timeout=600
 sudo subscription-manager clean
-if [[ '${var.daemon["subscription_org"]}' == '' ]]; then
-    sudo subscription-manager register --username='${var.daemon["username"]}' --password='${var.daemon["password"]}' --force
+if [[ '${var.rhel_subscription["subscription_org"]}' == '' ]]; then
+    sudo subscription-manager register --username='${var.rhel_subscription["username"]}' --password='${var.rhel_subscription["password"]}' --force
 else
-    sudo subscription-manager register --org='${var.daemon["subscription_org"]}' --activationkey='${var.daemon["activationkey"]}' --force
+    sudo subscription-manager register --org='${var.rhel_subscription["subscription_org"]}' --activationkey='${var.rhel_subscription["activationkey"]}' --force
 fi
 sudo subscription-manager refresh
 sudo subscription-manager attach --auto
