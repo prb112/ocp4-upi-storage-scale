@@ -23,7 +23,7 @@ resource "openstack_blockstorage_volume_v3" "storage_volume" {
 
   name        = join("-", [var.daemon["name_prefix"], "storage-vol", tostring(count.index)])
   size        = var.storage["volume_size"]
-  volume_type = var.storage["volume_storage_template"]
+  volume_type = var.storage["volume_type"]
 
   lifecycle {
     prevent_destroy = false
@@ -64,6 +64,8 @@ resource "openstack_compute_volume_attach_v2" "storage_v_attach_volume_1" {
 
   instance_id = openstack_compute_instance_v2.daemon[0].id
   volume_id   = openstack_blockstorage_volume_v3.storage_volume[count.index].id
+
+  multiattach = true
 }
 
 resource "openstack_compute_volume_attach_v2" "storage_v_attach_volume_2" {
@@ -72,4 +74,6 @@ resource "openstack_compute_volume_attach_v2" "storage_v_attach_volume_2" {
 
   instance_id = openstack_compute_instance_v2.daemon[1].id
   volume_id   = openstack_blockstorage_volume_v3.storage_volume[count.index].id
+
+  multiattach = true
 }
