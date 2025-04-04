@@ -4,7 +4,7 @@ The [`ocp4-upi-storage-scale` project](https://github.com/IBM/ocp4-upi-storage-s
 
 The code uses Terraform with a combination of YAML, TF and other files to coordinate the provisioning and setup of the relevant infrastructure.
 
-*WARNING*: Only attaches 2 volumes!.
+*WARNING*: Only attaches 2 volumes! You *must* manually change to `Shared Volumes` in PowerVC.
 
 # Installation Quickstart
 

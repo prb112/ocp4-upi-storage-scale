@@ -18,6 +18,24 @@
 #
 ################################################################
 
+#  resource "openstack_blockstorage_volume_type_v3" "multiattach" {
+#    name        = "multiattach"
+#    description = "Multiattach-enabled volume type"
+#    extra_specs = {
+#        multiattach = "True"
+#    }
+#    is_public = false
+#    //var.storage["volume_type"]
+# }
+
+resource "openstack_blockstorage_volume_type_v3" "multiattach" {
+  name        = "multiattach"
+  description = "Multiattach-enabled volume type"
+  extra_specs = {
+      multiattach = "<is> True"
+  }
+}
+
 resource "openstack_blockstorage_volume_v3" "storage_volume" {
   count = var.storage["number_volumes"]
 
