@@ -32,7 +32,7 @@ resource "openstack_blockstorage_volume_type_v3" "multiattach" {
   name        = "multiattach"
   description = "Multiattach-enabled volume type"
   extra_specs = {
-      multiattach = "<is> True"
+    multiattach = "<is> True"
   }
 }
 

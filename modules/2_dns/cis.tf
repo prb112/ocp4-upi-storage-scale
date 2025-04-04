@@ -27,7 +27,7 @@ resource "ibm_cis_dns_record" "daemon_scale" {
   count     = var.daemon["count"]
   cis_id    = var.ibm_cloud_cis_crn
   content   = var.daemon_ips[count.index]
-  domain_id = data.ibm_cis_domain.domain.id
+  domain_id = data.ibm_cis_domain.domain.domain_id
   name      = "${lower(var.daemon["name_prefix"])}-scale-${count.index}.${var.daemon["domain_name"]}"
   ttl       = 900
   type      = "A"

@@ -74,11 +74,11 @@ resource "null_resource" "daemon_register" {
 
   connection {
     type        = "ssh"
-    user        = self.triggers.rhel_username
-    host        = self.triggers.daemon_ip
+    user        = self.triggers.user
+    host        = self.triggers.host
     private_key = self.triggers.private_key
-    agent       = self.triggers.ssh_agent
-    timeout     = "${self.triggers.connection_timeout}m"
+    agent       = self.triggers.agent
+    timeout     = "${self.triggers.timeout}m"
   }
 
   provisioner "remote-exec" {
@@ -86,10 +86,11 @@ resource "null_resource" "daemon_register" {
 # Give some more time to subscription-manager
 sudo subscription-manager config --server.server_timeout=600
 sudo subscription-manager clean
-if [[ '${var.rhel_subscription["subscription_org"]}' == '' ]]; then
-    sudo subscription-manager register --username='${var.rhel_subscription["username"]}' --password='${var.rhel_subscription["password"]}' --force
+if [[ '${var.rhel_subscription["subscription_org"]}' == '' ]]
+then
+    sudo subscription-manager register --username=${var.rhel_subscription["username"]} --password=${sensitive(var.rhel_subscription["password"])} --auto-attach --force
 else
-    sudo subscription-manager register --org='${var.rhel_subscription["subscription_org"]}' --activationkey='${var.rhel_subscription["activationkey"]}' --force
+    sudo subscription-manager register --org='${var.rhel_subscription["subscription_org"]}' --activationkey='${sensitive(var.rhel_subscription["activationkey"])}' --force
 fi
 sudo subscription-manager refresh
 sudo subscription-manager attach --auto
@@ -169,14 +170,12 @@ EOF
   provisioner "remote-exec" {
     inline = [
       <<EOF
-yum -y install 'kernel-devel-uname-r == $(uname -r)'
-yum -y install cpp gcc gcc-c++ binutils
-yum -y install 'kernel-headers-$(uname -r)' elfutils elfutils-devel make
-done
-yum -y install python3 ksh m4 boost-regex
-yum -y install postgresql-server postgresql-contrib
-yum -y install openssl-devel cyrus-sasl-devel
-yum -y install nftables
+yum -y install cpp gcc gcc-c++ binutils \
+    kernel-headers elfutils elfutils-devel make \
+    python3 ksh m4 boost-regex \
+    postgresql-server postgresql-contrib \
+    openssl-devel cyrus-sasl-devel \
+    nftables
 EOF
     ]
   }

@@ -18,6 +18,14 @@
 #
 ################################################################
 
+# Figures out the key files
+locals {
+  private_key_file = var.ssh["private_key_file"] == "" ? "${path.cwd}/data/id_rsa" : join("/", ["${path.cwd}", var.ssh["private_key_file"]])
+  public_key_file  = var.ssh["public_key_file"] == "" ? "${path.cwd}/data/id_rsa.pub" : join("/", ["${path.cwd}", var.ssh["public_key_file"]])
+  private_key      = file(coalesce(local.private_key_file, "/dev/null"))
+  public_key       = file(coalesce(local.public_key_file, "/dev/null"))
+}
+
 resource "null_resource" "upload_scale" {
   count = var.daemon["count"]
 
@@ -25,16 +33,25 @@ resource "null_resource" "upload_scale" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = var.daemon_ips[count.index]
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
+  }
+
+  # Report what is being uploaded
+  provisioner "remote-exec" {
+    inline = [
+      <<EOF
+echo "Uploading from ${var.scale["install"]}"
+EOF
+    ]
   }
 
   # Download Storage Scale 5.2.1.1 installer from IBM Fix Central.
   # Copy it to the data/ directory
   provisioner "file" {
-    source      = var.scale["install"]
-    destination = "scale/${var.scale["install"]}"
+    source      = "${path.module}/../../${var.scale["install"]}"
+    destination = "/root/${var.scale["install"]}"
   }
 
   # Make the Storage Scale 5.2.1.1 binary files executable
@@ -42,7 +59,8 @@ resource "null_resource" "upload_scale" {
     inline = [
       <<EOF
 chmod u+x scale/${var.scale["install"]}
-echo ./scale/${var.scale["install"]}
+mkdir -p scale
+mv ${var.scale["install"]} ./scale/${var.scale["install"]}
 EOF
     ]
   }
@@ -56,7 +74,7 @@ resource "null_resource" "install_scale" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = var.daemon_ips[count.index]
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }
@@ -135,7 +153,7 @@ resource "null_resource" "configure_for_ocp" {
     type        = "ssh"
     user        = var.daemon["username"]
     host        = var.daemon_ips[count.index]
-    private_key = sensitive(var.ssh["private_key"])
+    private_key = sensitive(local.private_key)
     agent       = var.ssh["agent"]
     timeout     = var.ssh["connection_timeout"]
   }
