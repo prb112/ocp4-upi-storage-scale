@@ -34,33 +34,50 @@ resource "openstack_blockstorage_volume_v3" "storage_volume" {
   volume_type = var.storage["volume_storage_template"]
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
-resource "openstack_compute_volume_attach_v2" "storage_v_attach" {
+# Dev note: A complicated for-each is used, and fails to attach
+
+# resource "openstack_compute_volume_attach_v2" "storage_v_attach" {
+#   depends_on = [null_resource.daemon_init]
+#   // Need to generate a matrix
+#   for_each = {
+#     storage1 = {
+#       volume = 0
+#       daemon = 0
+#     }
+#     storage2 = {
+#       volume = 0
+#       daemon = 1
+#     }
+#     storage3 = {
+#       volume = 1
+#       daemon = 0
+#     }
+#     storage4 = {
+#       volume = 1
+#       daemon = 1
+#     }
+#   }
+
+#   volume_id   = openstack_blockstorage_volume_v3.storage_volume[each.value.volume].id
+#   instance_id = openstack_compute_instance_v2.daemon[each.value.daemon].id
+# }
+
+resource "openstack_compute_volume_attach_v2" "storage_v_attach_volume_1" {
+  count      = 2
   depends_on = [null_resource.daemon_init]
 
-  // Need to generate a matrix
-  for_each = {
-    storage1 = {
-      volume = 0
-      daemon = 0
-    }
-    storage2 = {
-      volume = 0
-      daemon = 1
-    }
-    storage3 = {
-      volume = 1
-      daemon = 0
-    }
-    storage4 = {
-      volume = 1
-      daemon = 1
-    }
-  }
+  instance_id = openstack_compute_instance_v2.daemon[0].id
+  volume_id   = openstack_blockstorage_volume_v3.storage_volume[count.index].id
+}
 
-  volume_id   = openstack_blockstorage_volume_v3.storage_volume[each.value.volume].id
-  instance_id = openstack_compute_instance_v2.daemon[each.value.daemon].id
+resource "openstack_compute_volume_attach_v2" "storage_v_attach_volume_2" {
+  count      = 2
+  depends_on = [openstack_compute_volume_attach_v2.storage_v_attach_volume_1]
+
+  instance_id = openstack_compute_instance_v2.daemon[1].id
+  volume_id   = openstack_blockstorage_volume_v3.storage_volume[count.index].id
 }

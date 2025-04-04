@@ -77,6 +77,7 @@ variable "storage" {
     "volume_size"             = ""
     "volume_storage_template" = ""
     "number_volumes"          = 2
+    # The storage is protected. The lifecycle prevent_destroy is true
   }
 }
 
