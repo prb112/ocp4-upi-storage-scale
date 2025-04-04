@@ -18,19 +18,11 @@
 #
 ################################################################
 
-locals {
-  disk_config = {
-    volume_count = var.storage["number_volumes"]
-    volume_size  = var.storage["volume_size"]
-    disk_name    = "disk/pv-storage-disk"
-  }
-}
-
 resource "openstack_blockstorage_volume_v3" "storage_volume" {
   count = var.storage["number_volumes"]
 
   name        = join("-", [var.daemon["name_prefix"], "storage-vol", tostring(count.index)])
-  size        = var.storage["number_volumes"]
+  size        = var.storage["volume_size"]
   volume_type = var.storage["volume_storage_template"]
 
   lifecycle {
