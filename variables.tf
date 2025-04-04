@@ -96,7 +96,7 @@ variable "storage" {
     "scg_flavor_is_public"    = ""
     "volume_size"             = ""
     "volume_storage_template" = ""
-    "volume_type" = "multiattach"
+    "volume_type"             = "multiattach"
     "number_volumes"          = 2
     # The storage is protected. The lifecycle prevent_destroy is true
   }
