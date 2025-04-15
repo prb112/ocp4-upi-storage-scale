@@ -1,0 +1,1 @@
+This module installs scale and sets it up for OpenShift usage. The Storage Scale installer is from [https://www.ibm.com/support/fixcentral/swg/selectFixes?parent=Software%20defined%20storage&product=ibm/StorageSoftware/IBM+Storage+Scale&release=5.2.3&platform=Linux+PPC64LE&function=all&utm_source=ibm_developer]

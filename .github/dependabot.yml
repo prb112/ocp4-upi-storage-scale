@@ -1,6 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
-    directory: "/"
+    directory: "/powervc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/powervs"
     schedule:
       interval: "weekly"

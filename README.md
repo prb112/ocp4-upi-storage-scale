@@ -1,10 +1,10 @@
 # ocp4-upi-storage-scale
 
-The [`ocp4-upi-storage-scale` project](https://github.com/IBM/ocp4-upi-storage-scale) provides Terraform based automation code to help with the deployment of [Storage Scale](https://github.com/linux-system-roles/nbde_server) on [IBM® PowerVC](https://www.ibm.com/products/powervc).
+The [`ocp4-upi-storage-scale` project](https://github.com/IBM/ocp4-upi-storage-scale) provides Terraform based automation code to help with the deployment of [Storage Scale](https://github.com/linux-system-roles/nbde_server) on [IBM® PowerVC](https://www.ibm.com/products/powervc) and [IBM® PowerVS](https://www.ibm.com/products/powervs).
 
 The code uses Terraform with a combination of YAML, TF and other files to coordinate the provisioning and setup of the relevant infrastructure.
 
-*WARNING*: Only attaches 2 volumes! You *must* manually change to `Shared Volumes` in PowerVC.
+*WARNING*: Only attaches 2 volumes in PowerVC! You *must* manually change to `Shared Volumes` in PowerVC.
 
 # Installation Quickstart
 
@@ -21,7 +21,7 @@ You'll need to use git to clone the deployment code when working off the main br
 
 ```
 $ git clone https://github.com/prb112/ocp4-upi-storage-scale
-$ cd ocp4-upi-storage-scale
+$ cd ocp4-upi-storage-scale/powervs
 ```
 
 ## Setup Terraform Variables
@@ -35,6 +35,7 @@ Note: RHEL 9.4 and higher are th eonly supported versions.
 Run the following commands from within the directory.
 
 ```
+$ cd powervs
 $ terraform init
 $ terraform plan -var-file=var.tfvars
 $ terraform apply -var-file=var.tfvars
@@ -81,60 +82,6 @@ connectivity. This automation code have been tested on the following Operating S
 - Windows 10
 
 Follow the [guide](docs/automation_host_prereqs.md) to complete the prerequisites.
-
-## PowerVS Prerequisites
-
-Follow the [guide](docs/prereqs_powervs.md) to complete the PowerVS prerequisites.
-
-## Tang Infra Install
-
-Follow the [quickstart](docs/quickstart.md) guide for NBDE installation on PowerVS.
-
-## Automation Host Prerequisites
-
-- [Automation Host Prerequisites](#automation-host-prerequisites)
-    - [Configure Your Firewall](#configure-your-firewall)
-    - [Automation Host Setup](#automation-host-setup)
-        - [Terraform](#terraform)
-        - [PowerVS CLI](#powervs-cli)
-        - [Git](#git)
-
-### Automation Host Setup
-
-Install the following packages on the automation host. Select the appropriate install binaries based on your automation host platform - Mac/Linux/Windows.
-
-#### Terraform
-
-**Terraform**: Please open the [link](https://www.terraform.io/downloads) for downloading the latest Terraform. For validating the version run `terraform version` command after install. Terraform version 1.5.0 and above is required.
-
-Install Terraform and providers for Power environment:
-
-1. Download and install the latest Terraform binary for `linux/ppc64le`
-   from https://github.com/ppc64le-development/terraform-ppc64le/releases.
-2. Download the required Terraform providers for Power into your TF project directory:
-
-```
-$ cd <path_to_TF_project>
-$ mkdir -p ./providers
-$ curl -fsSL https://github.com/ocp-power-automation/terraform-providers-power/releases/download/v0.11/archive.zip -o archive.zip
-$ unzip -o ./archive.zip -d ./providers
-$ rm -f ./archive.zip
-```
-
-3. Initialize Terraform at your TF project directory:
-
-```
-$ terraform init --plugin-dir ./providers
-``` 
-
-#### Git
-
-**Git**:  Please refer to the [link](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions on installing Git.
-
-## Make It Better
-
-For bugs/enhancement requests etc. please open a
-GitHub [issue](https://github.com/ibm/powervs-tang-server-automation/issues)
 
 ## Contributing
 
