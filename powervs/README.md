@@ -1,5 +1,7 @@
 # ocp4-upi-storage-scale
 
+*work in progress*
+
 The [`ocp4-upi-storage-scale` project](https://github.com/IBM/ocp4-upi-storage-scale) provides Terraform based automation code to help with the deployment of [Storage Scale](https://github.com/linux-system-roles/nbde_server) on [IBM® PowerVC](https://www.ibm.com/products/powervc).
 
 The code uses Terraform with a combination of YAML, TF and other files to coordinate the provisioning and setup of the relevant infrastructure.
